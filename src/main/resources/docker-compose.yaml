@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+#  broker for kafka
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+    - 2181:2181
+    container_name: zookeper
+
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+    - 9092:9092
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ZOOKEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
+#      topic name: number of partitions: replication factor
+      KAFKA_CREATE_TOPIC: "test_topic:1:1"

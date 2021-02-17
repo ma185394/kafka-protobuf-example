@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option java_package = "com.protobuf.generated";
+option java_outer_classname = "EmployeeProto";
+
+// employee obj
+message Employee {
+  int32 id = 1;
+  string name = 2;
+  float salary = 3;
+}
+
+// this is the equivalent of an employee array
+message Employees {
+  repeated Employee employees = 1;
+}
