@@ -26,6 +26,10 @@ public class KafkaController {
         kafkaProducer.writeMessageToTopic(message);
     }
 
+    @PostMapping(path = "/employee", consumes = "application/json", produces = "application/x-protobuf")
+    public void createEmployee(@RequestBody EmployeeProto.Employee employee){
+        kafkaProducer.writeMessageToTopic(employee);
+    }
     @GetMapping(path = "/employee", produces = "application/x-protobuf")
     public void getEmployee() {
         kafkaProducer.writeMessageToTopic(employeeProto);
