@@ -25,7 +25,7 @@ public class KafkaProducer {
      * @param message contains data from the producer
      */
     public void writeMessageToTopic(String message) {
-        kafkaTemplate.send(TOPIC_NAME, message);
+//        kafkaTemplate.send(TOPIC_NAME, message);
     }
 
     /**
@@ -34,6 +34,6 @@ public class KafkaProducer {
      * @param employee contains data from the producer
      */
     public void writeMessageToTopic(EmployeeProto.Employee employee) {
-        kafkaTemplate.send(TOPIC_NAME, employee.toString());
+//        kafkaTemplate.send(TOPIC_NAME, employee.toString());
     }
 }

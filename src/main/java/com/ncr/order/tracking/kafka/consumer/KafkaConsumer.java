@@ -13,7 +13,7 @@ public class KafkaConsumer {
      *
      * @param message from kafka topic
      */
-    @KafkaListener(topics = "test_topic", groupId = "test_group_id")
+    @KafkaListener(containerFactory = "kafkaListenerContainerFactory", topics = "REDACTED")
     public void getMessageFromTopic(String message) {
         log.info("message from kafka {}", "\n" + message);
     }

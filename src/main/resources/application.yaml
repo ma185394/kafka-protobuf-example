@@ -1,8 +1,10 @@
 spring:
   kafka:
+
+    security:
+      protocol: SASL_SSL
     consumer:
-      bootstrap-servers: "127.0.0.1:9092"
-      group-id: "test_group_id"
+      bootstrap-servers: "REDACTED"
       auto-offset-reset: latest
 #      key-deserializer: "org.apache.kafka.common.serialization.StringDeserializer"
 #      value-deserializer: "org.apache.kafka.common.serialization.StringDeserializer"
