@@ -1,0 +1,112 @@
+syntax = "proto3";
+package pulse_streaming;
+
+option java_package = "com.ncr.order.tracking.kafka.protobuf";
+option java_outer_classname = "LogMessageProto";
+
+/**
+  * Logs
+  *
+  * If changing this model, increase the version in 'model_version' comment field.
+  * Do not use this message directly in any application. Only use in Logstash mapping file.
+  */
+message LogMessage {
+  string                      message_type = 1;       /// Always put "LOG" here. This field allows determining proper schema when facing unknown binary data.
+  uint32                      model_version = 2;      /// Always put "2" here. Version of the model. This field allows determining proper schema when facing unknown binary data.
+  string                      message_id = 3;         /// Unique message id - e.g. GUID
+  DateTimeInfo                timestamp_utc = 4;      /// ==OBSOLETE: use time_utc instead === Timestamp when this message came into existence in UTC
+  SiteInfo                    site_info = 5;          /// ==OBSOLETE: use site_id instead === Site information
+  ApplicationInfo             creator = 6;            /// Creator of this message
+  LogBody                     body = 7;
+  Timestamp                   time_utc = 8;           /// Timestamp when this message came into existence in UTC
+  string                      site_id = 9;            /// Unique site identifier. Pulse Realtime's key id (store key) is optimal key for Hospitality
+  string                      organization_id = 10;   /// DEPRECATED - For internal use only. Do not use on Pulse Streaming API.
+}
+
+message LogBody {
+  enum SeverityLevels {
+    DEBUG = 0;
+    INFO = 1;
+    WARNING = 2;
+    ERROR = 3;
+  }
+  SeverityLevels          severity = 1;
+  string                  log_name = 2;           /// Name of the log where the message resides
+  ApplicationInfo         application = 3;        /// The application that the message belongs to
+  string                  message = 4;            /// message text
+  map<string, string>     labels = 5;             /// additional log labels to be associated with the log message, e.g. custom tags, application specific ids, customer tag, etc.
+  string                  correlation_id = 6;     /// id that helps to correlate multiple log messages to a single bucket
+  enum LogTypes {
+    LOG_MESSAGE = 0;                   /// default generic log entry
+    JOURNAL_EVENT = 1;                  /// journaled event important for the business e.g. 'printer out of paper', etc.
+    ORDER_TRACKING = 2;                 /// order change notifications, e.g. 'order arrived to kitchen', etc.
+  }
+  LogTypes        log_type = 7;           /// type of the log message,
+}
+
+
+message ApplicationInfo {
+  string          computer_name = 1;          /// Name of the computer where the application resides
+  string          application_name = 2;       /// Name of the application that created this message. e.g. "ATO"
+  string          application_version = 3;    /// Versions of the application e.g. "19.3"
+}
+
+message Timestamp {
+  // Represents seconds of UTC time since Unix epoch
+  // 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to
+  // 9999-12-31T23:59:59Z inclusive.
+  int64 seconds = 1;
+
+  // Non-negative fractions of a second at nanosecond resolution. Negative
+  // second values with fractions must still have non-negative nanos values
+  // that count forward in time. Must be from 0 to 999,999,999
+  // inclusive.
+  int32 nanos = 2;
+}
+
+/** Site Info
+OBSOLETE, will be removed in future versions
+*/
+message SiteInfo {
+  repeated SiteIdentification site_ids = 1;   /// Set of ids uniquely identifying the site
+}
+
+/** Site ids
+OBSOLETE, will be removed in future versions
+*/
+message SiteIdentification {
+  string id = 1;                  /// The ID of the site where the transaction occurred.
+  enum IdType {
+    ALOHA_HASP_KEY = 0;
+    ALOHA_KEY = 1;
+    PULSE_ID = 2;
+    BSP_EU_ID = 3;
+    BSP_COMPANY_ID = 4;
+  }
+  IdType id_type = 2;
+}
+
+/** Date and time. ISO 8601
+OBSOLETE, will be removed in future versions
+ */
+message DateTimeInfo
+{
+  string date_time = 1;             /// ISO 8601 in UTC. e.g. '2016-10-05T14:35:32Z'
+}
+
+/** Order Tracking Message Info
+* Order Tracking message label mapping to Log Message label
+* Order Tracking message field can map to more than one field in Log Message
+*
+*   OrderStatusMessage         LogMessage
+*
+*   order_id                   body.correlation_id                               order_id will map to correlation_id
+*                              body.labels                                       KEY-VALUE pair with KEY being 'order_id'
+*   data_provider.name         body.application.application_name                 Name of provider - "ATO", "Aloha", "TDM"
+*   data_provider.version      body.application.application_version              Version of product - "16.2"
+*   event_type.category        body.labels                                       KEY-VALUE pair with KEY being 'category' and VALUE being the Enum Value - KITCHEN, ATO, POS, OTHER
+*   event_type.subject         body.labels                                       KEY-VALUE pair with KEY being 'subject' and VALUE being the use-case. E.g. 'Order Injection Flow'
+*   event_type.detail          body.labels                                       KEY-VALUE pair with KEY being 'detail' and VALUE being "Payment applied", "Order Created", "Check updated in TDM"
+*   attributes                 body.labels                                       KEY-VALUE pair with KEYS being TDMCheckId, TDMCheckVersion, DeliveryID,..., SiteCheckID
+*   time_utc                   time_utc                                          Timestamp when this message came into existence in UTC
+*/
