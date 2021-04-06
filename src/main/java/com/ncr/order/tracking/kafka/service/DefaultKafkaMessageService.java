@@ -30,17 +30,21 @@ public class DefaultKafkaMessageService implements KafkaMessageService {
     public void saveProtoLogMessage(LogMessageProto.LogMessage message) {
         if (message != null) {
 
-           LogMessageProto.LogMessage constructedMessage = LogMessageProto.LogMessage.newBuilder()
-                   .setOrganizationId(message.getOrganizationId())
-                   .setSiteId(message.getSiteId())
-                   .setTimeUtc(message.getTimeUtc())
-                   .setBody(message.getBody())
-                   .build();
+//           LogMessageProto.LogMessage constructedMessage = LogMessageProto.LogMessage.newBuilder()
+//                   .setOrganizationId(message.getOrganizationId())
+//                   .setSiteId(message.getSiteId())
+//                   .setTimeUtc(message.getTimeUtc())
+//                   .setBody(message.getBody())
+//                   .build();
 
-            final TrackedOrder orderToSave = mapper.createLogMessageProtoToTrackedOrder(constructedMessage);
+
+            final TrackedOrder orderToSave = mapper.createLogMessageProtoToTrackedOrder(message);
+
+            orderToSave.setTrackedOrderBody(message.getBody());
 
 //            log.trace("Saving the following message: {}", orderToSave);
-//            trackedOrderRepository.save(orderToSave);
+            trackedOrderRepository.save(orderToSave);
+
 
             log.info("Successfully saved tracked order with id {} and organization {} ",
                     message.getBody().getCorrelationId(),

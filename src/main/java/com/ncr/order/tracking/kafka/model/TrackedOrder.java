@@ -62,11 +62,11 @@ public class TrackedOrder implements Serializable {
     /**
      * The body from the Log Message
      */
-    @Convert(converter = LogBodyConverter.class, attributeName = "messageBody")
+    @Convert(converter = LogBodyConverter.class, attributeName = "logBody")
 //    @Type(type = "jsonb")
     @Column(name = "tracked_order_body")
 //    @Embedded
-    private LogMessageProto.LogMessage trackedOrderBody;
+    private LogMessageProto.LogBody trackedOrderBody;
 
     /**
      * The unique identifier of the site

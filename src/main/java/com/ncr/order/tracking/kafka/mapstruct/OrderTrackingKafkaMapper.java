@@ -13,14 +13,14 @@ import java.util.Base64;
 
 @Mapper(componentModel = "spring", uses = DateMapper.class, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface OrderTrackingKafkaMapper {
-//    @Mapping(target = "trackedOrderId", source = "body.correlationId")
-//    @Mapping(target = "organization", source = "organizationId")
-////    @Mapping(target = "trackedOrderBody", source = "body")
-//    @Mapping(target = "siteId", source = "siteId")
-//    @Mapping(target = "dateCreated", source = "timeUtc", qualifiedByName = "toDate")
+    @Mapping(target = "trackedOrderId", source = "body.correlationId")
+    @Mapping(target = "organization", source = "organizationId")
+//    @Mapping(target = "trackedOrderBody", source = "body")
+    @Mapping(target = "siteId", source = "siteId")
+    @Mapping(target = "dateCreated", source = "timeUtc", qualifiedByName = "toDate")
 //    @Mapping(target = "trackedOrderBody.body.severity", source = "body.severity" )
 //    @Mapping(target = "trackedOrderBody.body.logType", source = "body.logType")
-//    TrackedOrder createLogMessageProtoToTrackedOrder(LogMessageProto.LogMessage message);
+    TrackedOrder createLogMessageProtoToTrackedOrder(LogMessageProto.LogMessage message);
 
 //    @BeforeMapping
 //    @Named("bodyMapper")

@@ -13,13 +13,13 @@ import javax.persistence.Converter;
 @Converter(autoApply = true)
 @AllArgsConstructor
 @Slf4j
-public class LogBodyConverter implements AttributeConverter<LogMessageProto.LogMessage, String> {
+public class LogBodyConverter implements AttributeConverter<LogMessageProto.LogBody, String> {
 
     private final ObjectMapper mapper;
 
 
     @Override
-    public String convertToDatabaseColumn(LogMessageProto.LogMessage attribute) {
+    public String convertToDatabaseColumn(LogMessageProto.LogBody attribute) {
         if(attribute == null){
             return null;
         }
@@ -34,7 +34,7 @@ public class LogBodyConverter implements AttributeConverter<LogMessageProto.LogM
     }
 
     @Override
-    public LogMessageProto.LogMessage convertToEntityAttribute(String dbData) {
+    public LogMessageProto.LogBody convertToEntityAttribute(String dbData) {
         return null;
     }
 
