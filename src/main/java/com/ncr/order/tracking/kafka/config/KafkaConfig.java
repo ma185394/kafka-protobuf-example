@@ -9,4 +9,10 @@ public class KafkaConfig {
 
     private String bootstrapServers;
 
+    private String userName;
+
+    private String password;
+
+    private String groupId;
+
 }
