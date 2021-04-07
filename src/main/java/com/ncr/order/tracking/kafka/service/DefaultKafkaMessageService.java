@@ -8,6 +8,7 @@ import com.ncr.order.tracking.kafka.model.TrackedOrder;
 import com.ncr.order.tracking.kafka.protobuf.LogMessageProto;
 import com.ncr.order.tracking.kafka.repository.TrackedOrderRepository;
 
+import com.googlecode.protobuf.format.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
@@ -28,13 +29,15 @@ public class DefaultKafkaMessageService implements KafkaMessageService {
      */
     private final OrderTrackingKafkaMapper mapper;
 
+    private final JsonFormat jsonFormat;
+
     @Override
     public void saveProtoLogMessage(LogMessageProto.LogMessage message) {
         if (message != null) {
 
             final TrackedOrder orderToSave = mapper.createLogMessageProtoToTrackedOrder(message);
 
-            orderToSave.setTrackedOrderBody(message.getBody());
+            orderToSave.setTrackedOrderBody(jsonFormat.printToString(message.getBody()));
 
 //            ObjectMapper mapper = new ObjectMapper();
 //            JsonNode jsonNode = mapper.valueToTree(message.getBody());

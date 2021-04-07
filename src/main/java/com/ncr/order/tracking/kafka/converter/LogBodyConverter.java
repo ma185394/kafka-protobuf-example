@@ -24,7 +24,7 @@ public class LogBodyConverter implements AttributeConverter<LogMessageProto.LogB
         }
         String payload = "";
         try {
-            payload = mapper.writeValueAsString(logBody);
+            payload = new JsonFormat().printToString(logBody);
         } catch (Exception e) {
             log.error("Unable to serialize LogBody to jsonb due to: " + e.getCause());
         }

@@ -61,7 +61,7 @@ public class ProtoBuilder {
                         .setNanos(357000000)
                         .build())
                 .setSiteId("654987")
-//                .setOrganizationId("btw01")
+                .setOrganizationId("btw01")
                 .build();
 
 //        LogMessageProto.LogMessage clone = message.getField()
