@@ -34,4 +34,11 @@ public interface OrderTrackingKafkaMapper {
 //        }
 //        return convertedObject;
 //    }
+
+    @AfterMapping
+    default TrackedOrder toBody(@MappingTarget LogMessageProto.LogBody logBody){
+        final TrackedOrder trackedOrder = new TrackedOrder();
+        trackedOrder.setTrackedOrderBody(logBody);
+        return trackedOrder;
+    }
 }

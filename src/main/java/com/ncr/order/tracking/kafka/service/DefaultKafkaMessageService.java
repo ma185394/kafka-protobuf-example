@@ -1,5 +1,7 @@
 package com.ncr.order.tracking.kafka.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.Message;
 import com.ncr.order.tracking.kafka.mapstruct.OrderTrackingKafkaMapper;
 import com.ncr.order.tracking.kafka.model.TrackedOrder;
@@ -30,17 +32,13 @@ public class DefaultKafkaMessageService implements KafkaMessageService {
     public void saveProtoLogMessage(LogMessageProto.LogMessage message) {
         if (message != null) {
 
-//           LogMessageProto.LogMessage constructedMessage = LogMessageProto.LogMessage.newBuilder()
-//                   .setOrganizationId(message.getOrganizationId())
-//                   .setSiteId(message.getSiteId())
-//                   .setTimeUtc(message.getTimeUtc())
-//                   .setBody(message.getBody())
-//                   .build();
-
-
             final TrackedOrder orderToSave = mapper.createLogMessageProtoToTrackedOrder(message);
 
             orderToSave.setTrackedOrderBody(message.getBody());
+
+//            ObjectMapper mapper = new ObjectMapper();
+//            JsonNode jsonNode = mapper.valueToTree(message.getBody());
+
 
 //            log.trace("Saving the following message: {}", orderToSave);
             trackedOrderRepository.save(orderToSave);

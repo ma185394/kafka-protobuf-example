@@ -1,6 +1,10 @@
 package com.ncr.order.tracking.kafka.model;
 
 //import com.ncr.order.tracking.kafka.converter.LogBodyConverter;
+//import com.ncr.order.tracking.kafka.converter.LogBodyConverter;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.ncr.order.tracking.kafka.config.CustomSerializer;
 import com.ncr.order.tracking.kafka.converter.LogBodyConverter;
 import com.ncr.order.tracking.kafka.protobuf.LogMessageProto;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
@@ -25,10 +29,10 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "ORDERS", schema = "tracked_orders")
-@TypeDef(
-        name = "jsonb",
-        typeClass = JsonBinaryType.class
-)
+//@Type(
+//        name = "jsonb",
+//        typeClass = JsonBinaryType.class
+//)
 public class TrackedOrder implements Serializable {
 
     /**
@@ -62,10 +66,10 @@ public class TrackedOrder implements Serializable {
     /**
      * The body from the Log Message
      */
-    @Convert(converter = LogBodyConverter.class, attributeName = "logBody")
-//    @Type(type = "jsonb")
-    @Column(name = "tracked_order_body")
-//    @Embedded
+    @Type(type = "jsonb")
+//    @Convert(converter = LogBodyConverter.class)
+    @Column(name = "tracked_order_body", columnDefinition = "jsonb")
+    @JsonSerialize(using = CustomSerializer.class)
     private LogMessageProto.LogBody trackedOrderBody;
 
     /**

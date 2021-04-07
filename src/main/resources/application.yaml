@@ -68,3 +68,15 @@ order-tracking:
     topic: order_tracking
     retry:
       max-retry-attempts: 3 # Maximum retry attempts before recovery
+
+
+hibernate:
+  types:
+    jackson:
+      object:
+        mapper=com:
+          vladmihalcea:
+            hibernate:
+              type:
+                json:
+                  loader: CustomObjectMapperSupplier

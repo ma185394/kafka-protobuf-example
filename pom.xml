@@ -153,10 +153,11 @@
             <version>6.1.0</version>
         </dependency>
 
+
         <dependency>
-            <groupId>com.vladmihalcea</groupId>
-            <artifactId>hibernate-types-52</artifactId>
-            <version>2.7.0</version>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-guava</artifactId>
+            <version>2.11.4</version>
         </dependency>
 
     </dependencies>
