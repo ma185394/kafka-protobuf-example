@@ -20,21 +20,8 @@ public class KafkaController {
 
     private final KafkaProducer kafkaProducer;
 
-
-
-//    private final EmployeeProto.Employee employeeProto;
-
     @PostMapping("/publish")
     public void writeMessageToTopic(@RequestBody String message) throws Descriptors.DescriptorValidationException {
         kafkaProducer.writeLogMessage(message);
     }
-
-//    @PostMapping(path = "/employee", consumes = "application/json", produces = "application/x-protobuf")
-//    public void createEmployee(@RequestBody EmployeeProto.Employee employee){
-//        kafkaProducer.writeMessageToTopic(employee);
-//    }
-//    @GetMapping(path = "/employee", produces = "application/x-protobuf")
-//    public void getEmployee() {
-//        kafkaProducer.writeMessageToTopic(employeeProto);
-//    }
 }

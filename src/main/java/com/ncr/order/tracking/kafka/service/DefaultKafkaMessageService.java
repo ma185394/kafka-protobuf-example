@@ -1,8 +1,5 @@
 package com.ncr.order.tracking.kafka.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.protobuf.Message;
 import com.ncr.order.tracking.kafka.mapstruct.OrderTrackingKafkaMapper;
 import com.ncr.order.tracking.kafka.model.TrackedOrder;
 import com.ncr.order.tracking.kafka.protobuf.LogMessageProto;
@@ -10,9 +7,7 @@ import com.ncr.order.tracking.kafka.repository.TrackedOrderRepository;
 
 import com.googlecode.protobuf.format.JsonFormat;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
-import org.mapstruct.Mapping;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -39,11 +34,7 @@ public class DefaultKafkaMessageService implements KafkaMessageService {
 
             orderToSave.setTrackedOrderBody(jsonFormat.printToString(message.getBody()));
 
-//            ObjectMapper mapper = new ObjectMapper();
-//            JsonNode jsonNode = mapper.valueToTree(message.getBody());
-
-
-//            log.trace("Saving the following message: {}", orderToSave);
+            log.trace("Saving the following message: {}", orderToSave);
             trackedOrderRepository.save(orderToSave);
 
 

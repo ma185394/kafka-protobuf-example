@@ -1,7 +1,6 @@
 package com.ncr.order.tracking.kafka.consumer;
 
-//import com.fasterxml.jackson.annotation.JsonFormat;
-//import com.ncr.order.tracking.kafka.mapstruct.LogMapper;
+
 import com.ncr.order.tracking.kafka.protobuf.LogMessageProto;
         import com.ncr.order.tracking.kafka.service.KafkaMessageService;
         import lombok.AllArgsConstructor;

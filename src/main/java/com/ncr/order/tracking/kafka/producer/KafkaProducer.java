@@ -2,7 +2,6 @@ package com.ncr.order.tracking.kafka.producer;
 
 import com.google.protobuf.Descriptors;
 import com.ncr.order.tracking.kafka.protobuf.LogMessageProto;
-import com.protobuf.generated.EmployeeProto;
 import com.protobuf.generated.ProtoBuilder;
 import lombok.AllArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -29,11 +28,6 @@ public class KafkaProducer {
      *
      * @param message contains data from the producer
      */
-//    public void writeMessageToTopic(String message) {
-////        ProtoBuilder.buildEmployee();
-////        employeeKafkaTemplate.send(TOPIC_NAME, ProtoBuilder.buildEmployee());
-////    }
-
     public void writeLogMessage(String message) throws Descriptors.DescriptorValidationException {
         logMessageTemplate.send(TOPIC_NAME, ProtoBuilder.buildLogMessage());
     }

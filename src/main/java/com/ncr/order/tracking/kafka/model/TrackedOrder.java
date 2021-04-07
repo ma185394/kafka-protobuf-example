@@ -1,12 +1,5 @@
 package com.ncr.order.tracking.kafka.model;
 
-import com.ncr.order.tracking.kafka.converter.LogBodyConverter;
-import com.ncr.order.tracking.kafka.converter.LogBodyConverter;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.ncr.order.tracking.kafka.config.CustomSerializer;
-import com.ncr.order.tracking.kafka.converter.LogBodyConverter;
-import com.ncr.order.tracking.kafka.protobuf.LogMessageProto;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +7,11 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Column;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -68,8 +65,6 @@ public class TrackedOrder implements Serializable {
      */
     @Type(type = "jsonb")
     @Column(name = "tracked_order_body", columnDefinition = "jsonb")
-//    @Convert(converter = LogBodyConverter.class)
-//    @JsonSerialize(using = CustomSerializer.class)
     private String trackedOrderBody;
 
     /**
