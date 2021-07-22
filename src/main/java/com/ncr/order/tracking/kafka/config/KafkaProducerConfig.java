@@ -1,5 +1,9 @@
 package com.ncr.order.tracking.kafka.config;
 
+import com.github.daniel.shuy.kafka.protobuf.serde.KafkaProtobufDeserializer;
+import com.github.daniel.shuy.kafka.protobuf.serde.KafkaProtobufSerializer;
+import com.ncr.order.tracking.kafka.protobuf.LogMessageProto;
+import com.protobuf.generated.EmployeeProto;
 import lombok.AllArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -29,7 +33,7 @@ public class KafkaProducerConfig {
      */
 
     @Bean
-    public ProducerFactory<String, Object> producerFactory() {
+    public ProducerFactory<String, LogMessageProto.LogMessage> producerFactory() {
         Map<String, Object> configMap = new HashMap<>();
         configMap.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -41,10 +45,14 @@ public class KafkaProducerConfig {
         );
         configMap.put(
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                StringSerializer.class
+                KafkaProtobufSerializer.class
         );
 
-        return new DefaultKafkaProducerFactory<>(configMap);
+        return new DefaultKafkaProducerFactory<>(
+                configMap,
+                new StringSerializer(),
+                new KafkaProtobufSerializer<>()
+        );
     }
 
 
@@ -53,8 +61,13 @@ public class KafkaProducerConfig {
      *
      * @return kafkaTemplate used for connection to topic
      */
+//    @Bean
+//    public KafkaTemplate<String, EmployeeProto.Employee> kafkaTemplate() {
+//        return new KafkaTemplate(producerFactory());
+//    }
+
     @Bean
-    public KafkaTemplate<String, Object> kafkaTemplate() {
+    public KafkaTemplate<String, LogMessageProto.LogMessage> logMessageKafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }
