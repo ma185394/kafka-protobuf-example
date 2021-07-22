@@ -1,5 +1,6 @@
 package com.ncr.order.tracking.kafka.model;
 
+
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Column;
-
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 import java.util.UUID;
 
 /**
@@ -22,24 +22,20 @@ import java.util.UUID;
  *
  * @author ma185394
  */
-@NoArgsConstructor
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "ORDERS", schema = "tracked_orders")
 @TypeDef(
         name = "jsonb",
         typeClass = JsonBinaryType.class
 )
 public class TrackedOrder implements Serializable {
-
     /**
      *  Default serial version Id
      */
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Id of the order
-     */
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -49,23 +45,23 @@ public class TrackedOrder implements Serializable {
     private UUID id;
 
     /**
-     * The id of the order from Pulse
+     * The id from Pulse
      */
     @Column(name = "tracked_order_id")
     private String trackedOrderId;
 
     /**
-     * Organization of order
+     * Organization from the order
      */
     @Column(name = "organization")
     private String organization;
 
     /**
-     * The body from the Log Message
+     * The body of the Log Message
      */
     @Type(type = "jsonb")
-    @Column(name = "tracked_order_body", columnDefinition = "jsonb")
-    private String trackedOrderBody;
+    @Column(name = "payload", columnDefinition = "jsonb")
+    private String payload;
 
     /**
      * The unique identifier of the site
@@ -74,9 +70,9 @@ public class TrackedOrder implements Serializable {
     private String siteId;
 
     /**
-     * The date the tracked order was created
+     * Timestamp when this message came into existence
      */
-    @Column(name = "date_created")
-    private Date dateCreated;
-
+    @Column(name = "updated_date")
+    private Instant updatedDate;
 }
+

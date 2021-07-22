@@ -6,6 +6,7 @@ import com.google.protobuf.UnknownFieldSet;
 import com.ncr.order.tracking.kafka.protobuf.LogMessageProto;
 import lombok.Builder;
 import org.springframework.context.annotation.Bean;
+import sun.rmi.runtime.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -60,12 +61,22 @@ public class ProtoBuilder {
                         .setSeconds(1616420967L)
                         .setNanos(357000000)
                         .build())
+                .setSiteInfo(LogMessageProto.SiteInfo.newBuilder()
+                        .addSiteIds(0, LogMessageProto.SiteIdentification.newBuilder()
+                        .setId("5c4a800de30a40d3b51b4cf06dabd4fd")
+                        .setIdType(LogMessageProto.SiteIdentification.IdType.BSP_EU_ID))
+                        .addSiteIds(1, LogMessageProto.SiteIdentification.newBuilder()
+                                .setId("hsp-pulse-streaming")
+                                .setIdType(LogMessageProto.SiteIdentification.IdType.BSP_COMPANY_ID))
+//                        .addSiteIds(2, LogMessageProto.SiteIdentification.newBuilder()
+//                                .setId("mohamed-org-3")
+//                                .setIdType(LogMessageProto.SiteIdentification.IdType.PULSE_ID))
+
+                ) // end of SiteInfo
                 .setSiteId("654987")
                 .setOrganizationId("btw01")
                 .build();
 
-//        LogMessageProto.LogMessage clone = message.getField()
-//        message.getBody().getLabelsMap().putAll(map);
         return message;
     }
 }

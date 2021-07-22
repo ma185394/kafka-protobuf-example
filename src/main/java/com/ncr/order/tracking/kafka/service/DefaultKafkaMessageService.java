@@ -1,11 +1,12 @@
 package com.ncr.order.tracking.kafka.service;
 
+import com.googlecode.protobuf.format.JsonFormat;
 import com.ncr.order.tracking.kafka.mapstruct.OrderTrackingKafkaMapper;
 import com.ncr.order.tracking.kafka.model.TrackedOrder;
 import com.ncr.order.tracking.kafka.protobuf.LogMessageProto;
 import com.ncr.order.tracking.kafka.repository.TrackedOrderRepository;
 
-import com.googlecode.protobuf.format.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,25 +23,24 @@ public class DefaultKafkaMessageService implements KafkaMessageService {
     /**
      * Mapper for kafka messages
      */
-    private final OrderTrackingKafkaMapper mapper;
+    private final OrderTrackingKafkaMapper kafkaMapper;
 
+    /**
+     * Json Mapper for Protobuf Log Body
+     */
     private final JsonFormat jsonFormat;
 
     @Override
-    public void saveProtoLogMessage(LogMessageProto.LogMessage message) {
+    public void handleMessage(LogMessageProto.LogMessage message) {
         if (message != null) {
+            final TrackedOrder orderToSave = kafkaMapper.logMessageProtoToTrackedOrder(message);
+            orderToSave.setPayload(jsonFormat.printToString(message.getBody()));
 
-            final TrackedOrder orderToSave = mapper.createLogMessageProtoToTrackedOrder(message);
-
-            orderToSave.setTrackedOrderBody(jsonFormat.printToString(message.getBody()));
-
-            log.trace("Saving the following message: {}", orderToSave);
             trackedOrderRepository.save(orderToSave);
 
-
-            log.info("Successfully saved tracked order with id {} and organization {} ",
-                    message.getBody().getCorrelationId(),
-                    message.getOrganizationId());
+            log.info("Successfully saved tracked order with enterprise unit {} and organization {}",
+                    orderToSave.getSiteId(),
+                    orderToSave.getOrganization());
         }
     }
 }

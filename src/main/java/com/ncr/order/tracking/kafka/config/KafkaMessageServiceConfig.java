@@ -17,4 +17,10 @@ public class KafkaMessageServiceConfig {
             TrackedOrderRepository repository, OrderTrackingKafkaMapper mapper, JsonFormat jsonFormat){
         return new DefaultKafkaMessageService(repository, mapper, jsonFormat);
     }
+
+    @Bean
+    public JsonFormat jsonFormat() {
+        return new JsonFormat();
+
+    }
 }

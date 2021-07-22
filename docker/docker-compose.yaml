@@ -13,28 +13,6 @@ services:
     ports:
       - 9092:9092
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ZOOKEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
-
-  postgres:
-    image: postgres:9.6.2
-    ports:
-    - '5432:5432'
-    hostname: postgres
-    container_name: postgres
-    environment:
-      POSTGRES_PASSWORD: 'admin'
-      POSTGRES_DB: 'order_tracker'
-  pgadmin4:
-    image: fenglc/pgadmin4:latest
-    ports:
-      - '5050:5050'
-    depends_on:
-      - 'postgres'
-    hostname: pgadmin4
-    container_name: pgadmin4
-    environment:
-      DEFAULT_USER: 'pgadmin4@pgadmin.org'
-      DEFAULT_PASSWORD: 'admin'
-

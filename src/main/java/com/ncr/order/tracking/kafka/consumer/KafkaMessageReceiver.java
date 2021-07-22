@@ -2,10 +2,10 @@ package com.ncr.order.tracking.kafka.consumer;
 
 
 import com.ncr.order.tracking.kafka.protobuf.LogMessageProto;
-        import com.ncr.order.tracking.kafka.service.KafkaMessageService;
-        import lombok.AllArgsConstructor;
+import com.ncr.order.tracking.kafka.service.KafkaMessageService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-        import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -27,7 +27,7 @@ public class KafkaMessageReceiver {
     public void getMessageFromTopic(LogMessageProto.LogMessage message) {
 
         log.info("message from kafka {}", "\n" + message);
-        kafkaMessageService.saveProtoLogMessage(message);
+        kafkaMessageService.handleMessage(message);
 
 
     }
